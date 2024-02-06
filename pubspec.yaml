@@ -48,6 +48,9 @@ flutter:
 
   assets:
      - assets/images/
+     - assets/images/backgrounds/
+     - assets/images/elements/
+
 
   fonts:
      - family: Gentium Basic
