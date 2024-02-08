@@ -1,29 +1,29 @@
+import 'package:ancient_excavations_app/models/level_model.dart';
 import 'package:ancient_excavations_app/router/router.dart';
+import 'package:ancient_excavations_app/screens/games/match_pairs/levels/bloc/match_pairs_levels_bloc.dart';
 import 'package:ancient_excavations_app/theme/colors.dart';
 import 'package:ancient_excavations_app/widgets/action_button_widget.dart';
+import 'package:ancient_excavations_app/widgets/home_button.dart';
 import 'package:ancient_excavations_app/widgets/scores/scores_panel.dart';
 import 'package:ancient_excavations_app/widgets/settings_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 @RoutePage()
-class LobbyScreen extends StatefulWidget {
-  const LobbyScreen({super.key});
+class MatchPairsDifficultyScreen extends StatefulWidget {
+  const MatchPairsDifficultyScreen({super.key});
 
   @override
-  State<LobbyScreen> createState() => _LobbyScreenState();
+  State<MatchPairsDifficultyScreen> createState() =>
+      _MatchPairsDifficultyScreenState();
 }
 
-class _LobbyScreenState extends State<LobbyScreen> {
+class _MatchPairsDifficultyScreenState
+    extends State<MatchPairsDifficultyScreen> {
   final controller = PageController();
   int current = 0;
-
-  @override
-  void initState() {
-    current = 0;
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -51,7 +51,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    HomeButton(),
                     SettingsButton(),
+                    Spacer(flex: 3),
+                    Text(
+                      'Match Pairs'.toUpperCase(),
+                      style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Spacer(flex: 1),
                     ScoresPanel(),
                   ],
                 ),
@@ -75,36 +85,54 @@ class _LobbyScreenState extends State<LobbyScreen> {
                             controller: controller,
                             children: [
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Match pairs'.toUpperCase(),
+                                    'simple'.toUpperCase(),
                                     style: TextStyle(
                                         color: AppColors.brown,
                                         fontSize: 28,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset('assets/images/elements/match-pairs-icon.png'),
-                                      SizedBox(width: 20),
-                                      Image.asset('assets/images/elements/match-pairs-icon.png'),
-                                    ],
+                                  SvgPicture.asset(
+                                    'assets/images/difficulty/simple.svg',
+                                    width: 90,
                                   )
                                 ],
                               ),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Minesweeper'.toUpperCase(),
+                                    'middle'.toUpperCase(),
                                     style: TextStyle(
                                         color: AppColors.brown,
                                         fontSize: 28,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  Image.asset('assets/images/elements/minesweeper-icon.png')
+                                  SvgPicture.asset(
+                                    'assets/images/difficulty/middle.svg',
+                                    width: 90,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'advanced'.toUpperCase(),
+                                    style: TextStyle(
+                                        color: AppColors.brown,
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  SvgPicture.asset(
+                                    'assets/images/difficulty/advanced.svg',
+                                    width: 90,
+                                  )
                                 ],
                               ),
                             ],
@@ -114,9 +142,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                                GestureDetector(
+                            GestureDetector(
                               onTap: () {
-                                if (current == 1) {
+                                if (current <= 2) {
                                   controller.previousPage(
                                       duration: Duration(milliseconds: 500),
                                       curve: Curves.ease);
@@ -126,16 +154,24 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                 'assets/images/elements/left-button.svg',
                               ),
                             ),
-                            ActionButtonWidget(text: 'Play', onTap: () {
-                              if (current == 0) {
-                                context.router.push(MatchPairsDifficultyRoute());
-                              } else {
-                                context.router.push(MinesweeperDifficultyRoute());
-                              }
-                            }),
+                            ActionButtonWidget(
+                                text: 'Play',
+                                onTap: () {
+                                  switch (current) {
+                                    case 0:
+                                      context.router
+                                          .push(MatchPairsLevelsRoute(difficult: LevelDifficult.simple));
+                                    case 1:
+                                      context.router
+                                          .push(MatchPairsLevelsRoute(difficult: LevelDifficult.middle));
+                                    case 2:
+                                      context.router
+                                          .push(MatchPairsLevelsRoute(difficult: LevelDifficult.advanced));
+                                  }
+                                }),
                             GestureDetector(
                               onTap: () {
-                                if (current == 0) {
+                                if (current >= 0) {
                                   controller.nextPage(
                                       duration: Duration(milliseconds: 500),
                                       curve: Curves.ease);

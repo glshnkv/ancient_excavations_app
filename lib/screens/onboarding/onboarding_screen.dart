@@ -66,14 +66,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           SizedBox(height: 10),
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
-                            child: Flexible(
-                              child: Text(
-                                _dialogs[i],
-                                style: TextStyle(
-                                    color: AppColors.darkBrown,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
-                              ),
+                            child: Text(
+                              _dialogs[i],
+                              style: TextStyle(
+                                  color: AppColors.darkBrown,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         ],
